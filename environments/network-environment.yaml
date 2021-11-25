@@ -1,0 +1,70 @@
+#This file is an example of an environment file for defining the isolated
+#networks and related parameters.
+resource_registry:
+  # Network Interface templates to use (these files must exist). You can
+  # override these by including one of the net-*.yaml environment files,
+  # such as net-bond-with-vlans.yaml, or modifying the list here.
+  # Port assignments for the Controller
+  OS::TripleO::Controller::Net::SoftwareConfig:
+    ../network/config/multiple-nics/controller.yaml
+  # Port assignments for the ComputeHCI
+  OS::TripleO::ComputeHCI::Net::SoftwareConfig:
+    ../network/config/multiple-nics/computehci.yaml
+
+parameter_defaults:
+
+  ExtraConfig:
+    neutron::dns_domain: redhat.local
+  CloudName: osp.redhat.local
+  CloudNameInternal: overcloud.internalapi.redhat.local
+  CloudNameCtlplane: overcloud.ctlplane.redhat.local
+  CloudDomain: redhat.local
+  ControlPlaneSubnetCidr: '24'
+  # Gateway router for the provisioning network (or Undercloud IP)
+  ControlPlaneDefaultRoute: 10.10.11.2
+  EC2MetadataIp: 10.10.11.2  # Generally the IP of the Undercloud
+
+  # Define the DNS servers (maximum 2) for the overcloud nodes
+  # When the list is not set or empty, the nameservers on the ctlplane subnets will be used.
+  # (ctlplane subnets nameservers are controlled by the ``undercloud_nameservers`` option in ``undercloud.conf``)
+  DnsServers: []
+  # List of Neutron network types for tenant networks (will be used in order)
+  # Neutron VLAN ranges per network, for example 'datacentre:1:499,tenant:500:1000':
+  # Customize bonding options, e.g. "mode=4 lacp_rate=1 updelay=1000 miimon=100"
+  # for Linux bonds w/LACP, or "bond_mode=active-backup" for OVS active/backup.
+  BondInterfaceOvsOptions: "bond_mode=active-backup"
+  NeutronBridgeMappings: 'datacentre:br-ex'
+  ServiceNetMap:
+    NeutronTenantNetwork: tenant
+    CeilometerApiNetwork: internal_api
+    AodhApiNetwork: internal_api
+    GnocchiApiNetwork: internal_api
+    MongoDbNetwork: internal_api
+    CinderApiNetwork: internal_api
+    CinderIscsiNetwork: storage
+    GlanceApiNetwork: storage
+    GlanceRegistryNetwork: internal_api
+    KeystoneAdminApiNetwork: ctlplane # Admin connection for Undercloud
+    KeystonePublicApiNetwork: internal_api
+    NeutronApiNetwork: internal_api
+    HeatApiNetwork: internal_api
+    NovaApiNetwork: internal_api
+    NovaMetadataNetwork: internal_api
+    NovaVncProxyNetwork: internal_api
+    SwiftMgmtNetwork: storage_mgmt 
+    SwiftProxyNetwork: storage
+    SaharaApiNetwork: internal_api
+    HorizonNetwork: internal_api
+    MemcachedNetwork: internal_api
+    RabbitMqNetwork: internal_api
+    RedisNetwork: internal_api
+    MysqlNetwork: internal_api
+    CephClusterNetwork: storage_mgmt
+    CephPublicNetwork: storage
+    ControllerHostnameResolveNetwork: internal_api
+    ComputeHostnameResolveNetwork: internal_api
+    BlockStorageHostnameResolveNetwork: internal_api
+    ObjectStorageHostnameResolveNetwork: internal_api
+    CephStorageHostnameResolveNetwork: storage
+    IronicApiNetwork: oc_provisioning
+    IronicNetwork: oc_provisioning

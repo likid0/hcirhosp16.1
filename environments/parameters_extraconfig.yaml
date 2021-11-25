@@ -1,0 +1,44 @@
+parameter_defaults:
+  ExtraConfig:
+    heat::rabbit_heartbeat_timeout_threshold: 90
+    neutron::db::sync::db_sync_timeout: 1000
+
+  ControllerExtraConfig:
+    nova::network::neutron::neutron_url_timeout: '90'
+    tripleo::profile::base::database::mysql::mysql_server_options:
+      mysqld:
+        # MySQL InnoDB equally divided in 1GB instances
+        innodb_buffer_pool_instances: 2
+        # Wait for more time for innodb locks.
+        innodb_lock_wait_timeout: 120
+        # Query network write timeout raised to 120 seconds
+        net_write_timeout: 120
+        # Query network read timeout raised to 120 seconds
+        net_read_timeout: 120
+        # MySQL connection timeout set to 8 hours
+        connect_timeout: 28800
+    tripleo::haproxy::haproxy_default_timeout: ['http-request 2m', 'queue 2m', 'connect 60s', 'client 10m', 'server 10m', 'check 10s']
+    nova::config::nova_config:
+      quota/key_pairs:
+        value: "-1"
+      filter_scheduler/build_failure_weight_multiplier:
+        value: "0"
+  DatabaseSyncTimeout: 1000
+  NovaComputeExtraConfig:
+    nova::compute::reserved_host_memory: 1324
+
+  ComputeExtraConfig:
+    nova::compute::reserved_host_memory: 1024
+    nova::block_device_allocate_retries: 200
+    nova::cpu_allocation_ratio: 16
+    nova::ram_allocation_ratio: 1.0
+    nova::config::nova_config:
+      quota/key_pairs:
+        value: "-1"
+      filter_scheduler/build_failure_weight_multiplier:
+        value: "0"
+  ExtraSysctlSettings:
+    net.ipv4.conf.all.log_martians:
+      value: '0'
+    net.ipv4.conf.default.log_martians:
+      value: '0'

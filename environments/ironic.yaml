@@ -1,0 +1,16 @@
+parameter_defaults:
+   NovaSchedulerDiscoverHostsInCellsInterval: 15
+#   NovaSchedulerDefaultFilters:
+#       - AggregateInstanceExtraSpecsFilter
+#       - AvailabilityZoneFilter
+#       - ComputeFilter
+#       - ComputeCapabilitiesFilter
+#       - ImagePropertiesFilter
+#       - ServerGroupAntiAffinityFilter
+#       - ServerGroupAffinityFilter
+   IronicCleaningDiskErase: metadata
+   #IronicDebug: true
+   # IronicEnabledDrivers:
+   #   - pxe_ipmitool
+   #   - pxe_drac
+   #   - pxe_ilo
